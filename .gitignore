@@ -1,7 +1,5 @@
-*.pro.user
 *.dll
 *.exe
-*.lib
 /.vs/
-/obj/
-/bin/
+*/obj/
+*/bin/
