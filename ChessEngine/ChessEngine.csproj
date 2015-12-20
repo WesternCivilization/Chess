@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{335A32F4-3708-4BD0-AAD9-70289B9B8CF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chess</RootNamespace>
+    <AssemblyName>ChessEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sources\ChessDesk\ChessDesk.cs" />
+    <Compile Include="Sources\ChessDesk\ChessDeskCell.cs" />
+    <Compile Include="Sources\ChessGame.cs" />
+    <Compile Include="Sources\ChessGameControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Sources\ChessSelect.cs" />
+    <Compile Include="Sources\Chess\Chess.cs" />
+    <Compile Include="Sources\Chess\ChessEnum.cs" />
+    <Compile Include="Sources\Chess\ChessFactory.cs" />
+    <Compile Include="Sources\Chess\Visitors\ChessSkinUpdateVisitor.cs" />
+    <Compile Include="Sources\Chess\Visitors\IChessVisitor.cs" />
+    <Compile Include="Sources\Chess\Сoncrete\ChessBishop.cs" />
+    <Compile Include="Sources\Chess\Сoncrete\ChessKing.cs" />
+    <Compile Include="Sources\Chess\Сoncrete\ChessKnight.cs" />
+    <Compile Include="Sources\Chess\Сoncrete\ChessPawn.cs" />
+    <Compile Include="Sources\Chess\Сoncrete\ChessQueen.cs" />
+    <Compile Include="Sources\Chess\Сoncrete\ChessRook.cs" />
+    <Compile Include="Sources\Drawing\GraphicsDrawableMethod.cs" />
+    <Compile Include="Sources\Drawing\IDrawable.cs" />
+    <Compile Include="Sources\Drawing\IDrawObject.cs" />
+    <Compile Include="Sources\Drawing\ITrasfomable.cs" />
+    <Compile Include="Sources\Drawing\RectangleShape.cs" />
+    <Compile Include="Sources\Drawing\Shape.cs" />
+    <Compile Include="Sources\Drawing\Sprite.cs" />
+    <Compile Include="Sources\Loader\FilesSystemLoader.cs" />
+    <Compile Include="Sources\Loader\ILoader.cs" />
+    <Compile Include="Sources\Loader\ResourceLoader.cs" />
+    <Compile Include="Sources\Player.cs" />
+    <Compile Include="Sources\RepaintControl.cs" />
+    <Compile Include="Sources\Serializator.cs" />
+    <Compile Include="Sources\Skin\ChessSkin.cs" />
+    <Compile Include="Sources\Skin\SkinXmlParser\SkinXmlParser.Checkers.cs" />
+    <Compile Include="Sources\Skin\SkinXmlParser\SkinXmlParser.Constants.cs" />
+    <Compile Include="Sources\Skin\SkinXmlParser\SkinXmlParser.cs" />
+    <Compile Include="Sources\Skin\SkinXmlParser\SkinXmlParser.Results.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
