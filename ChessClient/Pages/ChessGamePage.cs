@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using Tools;
 
-namespace ChessClient
+namespace Chess
 {
     public class ChessGamePage : Panel
     {
-        /*
         public Game Game { get; set; }
 
-        public ChessGameControl( ChessGame game )
+        public ChessGamePage( Game game )
         {
             Game = game;
             DoubleBuffered = true;
@@ -41,7 +37,7 @@ namespace ChessClient
         {
             e.Graphics.Draw( Game.Desk );
             select.DrawHover( e.Graphics );
-            e.Graphics.Draw( ChessFactory.Instance );
+            e.Graphics.Draw( Game.Factory.AllChess );
             select.DrawSelect( e.Graphics );
             if ( holdChess != null )
                 e.Graphics.Draw( holdChess );
@@ -50,8 +46,9 @@ namespace ChessClient
         public void OnResize( object sender, EventArgs e )
         {
             Game.Desk.Rectangle = ClientRectangle;
-            ChessFactory.Instance.ChessSize = Game.Desk.CellsSize;
-            ChessFactory.Instance.UpdatePositions();
+            Game.Factory.ChessSize = Game.Desk.CellsSize;
+            Game.Factory.AllChess.UpdatePositions();
+            this.Repaint();
         }
 
         private Chess holdChess;
@@ -101,6 +98,5 @@ namespace ChessClient
                 }
             }
         }
-        */
     }
 }

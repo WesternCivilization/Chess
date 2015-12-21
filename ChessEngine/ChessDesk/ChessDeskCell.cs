@@ -5,8 +5,8 @@ namespace Chess
 {
     public class ChessDeskCell : IDrawable
     {
-        public GameColor Color { get; set; }
-        public ChessDesk Desk { get; set; }
+        public GameColor Color { get; private set; }
+        public ChessDesk Desk { get; private set; }
 
         private Chess chess;
         public Chess Chess

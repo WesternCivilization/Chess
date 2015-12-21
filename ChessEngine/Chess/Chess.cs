@@ -7,33 +7,35 @@ namespace Chess
         public ChessDeskCell Cell { get; set; }
         public Sprite Sprite { get; set; }
         public GameColor Color { get; private set; }
-        public ChessType Type { get; set; }
+        public ChessType Type { get; private set; }
+        public ChessFactory Factory { get; private set; }
         public bool UsingFreeMove { get; set; }
 
-        protected Chess( GameColor color, ChessType type )
+        protected Chess( ChessFactory factory, GameColor color, ChessType type )
         {
+            Factory = factory;
             Color = color;
             Type = type;
-            Sprite = ChessFactory.Instance.Skin[ color, type ].Clone();
+            Sprite = Factory.Skin[ color, type ].Clone();
         }
 
         public void UpdateSprite()
         {
-            Sprite.Cut = ChessFactory.Instance.Skin[ Color, Type ].Cut;
+            Sprite.Cut = Factory.Skin[ Color, Type ].Cut;
         }
 
         public void Kill()
         {
             Cell.Chess = null;
             Cell = null;
-            ChessFactory.Instance.Kill( this );
+            Factory.Kill( this );
         }
 
         public void Dispose()
         {
             Cell.Chess = null;
             Cell = null;
-            ChessFactory.Instance.Remove( this );
+            Factory.Remove( this );
         }
 
         #region Checkers

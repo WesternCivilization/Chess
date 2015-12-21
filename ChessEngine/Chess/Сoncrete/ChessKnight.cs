@@ -4,14 +4,14 @@ namespace Chess
 {
     public class ChessKnight : Chess
     {
-        public ChessKnight( GameColor color )
-            :   base( color, ChessType.Knight )
+        public ChessKnight( ChessFactory factory, GameColor color )
+            :   base( factory, color, ChessType.Knight )
         {
         }
 
         public override void Accept(IChessVisitor visitor)
         {
-            visitor.Visit(this);
+            visitor.Visit( this );
         }
 
         protected override bool CanMoveInternal(Point index)

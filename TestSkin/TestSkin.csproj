@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{910A47FC-93BC-46F6-B115-6FCBCA62DA66}</ProjectGuid>
+    <ProjectGuid>{14213606-D63A-4A7E-8E9D-DBA3245A32C9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chess</RootNamespace>
-    <AssemblyName>ChessClient</AssemblyName>
+    <RootNamespace>TestSkin</RootNamespace>
+    <AssemblyName>TestSkin</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -46,20 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChessClientForm.cs">
+    <Compile Include="TestSkinForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChessClientForm.Designer.cs">
-      <DependentUpon>ChessClientForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ChessGamePage.cs">
-      <SubType>Component</SubType>
+    <Compile Include="TestSkinForm.Designer.cs">
+      <DependentUpon>TestSkinForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ChessClientForm.resx">
-      <DependentUpon>ChessClientForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -68,7 +62,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -87,14 +80,6 @@
     <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">
       <Project>{335a32f4-3708-4bd0-aad9-70289b9b8cf0}</Project>
       <Name>ChessEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChessNetwork\ChessNetwork.csproj">
-      <Project>{9b2e8a89-7484-42e5-b296-8574982ede4a}</Project>
-      <Name>ChessNetwork</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tools\Tools.csproj">
-      <Project>{bd5d83f6-23d0-4712-8e8e-de4e32c93b62}</Project>
-      <Name>Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

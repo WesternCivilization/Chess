@@ -8,6 +8,11 @@ namespace Chess
 {
     public class Skin
     {
+        public Skin( Image texture )
+        {
+            Texture = texture;
+        }
+
         public Skin( string xmlFilePath )
         {
             Load( xmlFilePath );

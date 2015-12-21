@@ -13,12 +13,19 @@ namespace Chess
         Player Player2 { get; set; }
 
         public ChessDesk Desk { get; private set; }
+        public ChessFactory Factory { get; private set; }
 
-        public Game( Player p1, Player p2 )
+        public Game( Player player1, Player player2, ChessFactory factory )
         {
             Desk = new ChessDesk();
-            Player1 = p1;
-            Player2 = p2;
+            Factory = factory;
+
+            Player1 = player1;
+            Player2 = player2;
+
+            Player1.ChessColor = GameColor.White;
+            Player2.ChessColor = GameColor.Black;
+
             BuildStandartArrangement();
         }
 
@@ -30,7 +37,7 @@ namespace Chess
 
         public void AddChess( ChessType type, GameColor color, int x, int y )
         {
-            Desk[ x, y ].Chess = ChessFactory.Instance.CreateChess( type, color, Desk[ x, y ].Position );
+            Desk[ x, y ].Chess = Factory.CreateChess( type, color, Desk[ x, y ].Position );
         }
 
         public void BuildStandartArrangement()

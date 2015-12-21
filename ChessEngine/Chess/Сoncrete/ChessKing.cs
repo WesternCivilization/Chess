@@ -4,8 +4,8 @@ namespace Chess
 {
     public class ChessKing : Chess
     {
-        public ChessKing( GameColor color )
-            :   base( color, ChessType.King )
+        public ChessKing( ChessFactory factory, GameColor color )
+            :   base( factory, color, ChessType.King )
         {
         }
 

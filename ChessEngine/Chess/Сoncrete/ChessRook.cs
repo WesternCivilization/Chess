@@ -4,8 +4,8 @@ namespace Chess
 {
     public class ChessRook : Chess
     {
-        public ChessRook( GameColor color )
-            :   base( color, ChessType.Rook )
+        public ChessRook( ChessFactory factory, GameColor color )
+            :   base( factory, color, ChessType.Rook )
         {
         }
 

@@ -10,7 +10,7 @@ namespace Chess
     {
         public string Login { get; set; }
         public string Password { get; set; }
-
-        // TODO
+        public GameColor ChessColor { get; set; }
+        
     }
 }

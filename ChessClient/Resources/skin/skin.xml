@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<skin image="D:\Programming\Projects\Visual Studio\Учёба\Chess\ChessClient\bin\Debug\Resources\skin\texture.png">
+  <black>
+    <queen   x="20"  y="20" width="100" height="100" />
+    <king    x="187" y="20" width="100" height="100" />
+    <rook    x="355" y="20" width="100" height="100" />
+    <bishop  x="523" y="20" width="100" height="100" />
+    <knight  x="692" y="20" width="100" height="100" />
+    <pawn    x="860" y="20" width="100" height="100" />
+  </black>
+  <white>
+    <queen   x="20"  y="160" width="100" height="100" />
+    <king    x="187" y="160" width="100" height="100" />
+    <rook    x="355" y="160" width="100" height="100" />
+    <bishop  x="523" y="160" width="100" height="100" />
+    <knight  x="692" y="160" width="100" height="100" />
+    <pawn    x="860" y="160" width="100" height="100" />
+  </white>
+</skin>

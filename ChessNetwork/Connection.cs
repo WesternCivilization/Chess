@@ -17,6 +17,8 @@ namespace Chess
                 if ( ip.AddressFamily == AddressFamily.InterNetwork )
                     ips.Add( ip );
             }
+            if ( ips.Count == 0 )
+                ips.Add( IPAddress.Parse( "127.0.0.1" ) );
             return ips;
         }
 

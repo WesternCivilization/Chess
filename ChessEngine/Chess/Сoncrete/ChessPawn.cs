@@ -4,8 +4,8 @@ namespace Chess
 {
     public class ChessPawn : Chess
     {
-        public ChessPawn( GameColor color )
-            :   base( color, ChessType.Pawn )
+        public ChessPawn( ChessFactory factory, GameColor color )
+            :   base( factory, color, ChessType.Pawn )
         {
         }
 
@@ -16,7 +16,7 @@ namespace Chess
 
         protected override bool CanMoveInternal( Point index )
         {
-            bool upDirection = ChessFactory.Instance.GetDirection( this );
+            bool upDirection = Factory.GetDirection( this ) == ChessDirection.Up;
             if (    new Point( Cell.Index.X - 1, upDirection ? Cell.Index.Y - 1 : Cell.Index.Y + 1 ) == index     // left
                 ||  new Point( Cell.Index.X + 1, upDirection ? Cell.Index.Y - 1 : Cell.Index.Y + 1 ) == index )   // right
                 return CheckMoveKillOpponent( index );

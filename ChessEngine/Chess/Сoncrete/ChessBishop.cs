@@ -4,8 +4,8 @@ namespace Chess
 {
     public class ChessBishop : Chess
     {
-        public ChessBishop( GameColor color )
-            :   base( color, ChessType.Bishop )
+        public ChessBishop( ChessFactory factory, GameColor color )
+            :   base( factory, color, ChessType.Bishop )
         {
         }
 
