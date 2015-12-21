@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<skin image="skin_texture">
+<skin image="Resources\skin\texture.png">
   <black>
     <queen   x="20"  y="20" width="100" height="100" />
     <king    x="187" y="20" width="100" height="100" />

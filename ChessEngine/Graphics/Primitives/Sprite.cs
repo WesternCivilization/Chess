@@ -32,6 +32,14 @@ namespace Chess
             Size = image.Size;
         }
 
+        public Sprite( Image image, RectangleF cut )
+        {
+            Image = image;
+            Cut = cut;
+            Position = new PointF();
+            Size = image.Size;
+        }
+
         public Sprite( Image image, RectangleF cut, PointF position, SizeF size )
         {
             Image = image;

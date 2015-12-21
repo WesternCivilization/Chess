@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 using System.Xml;
 
 namespace Chess
@@ -20,18 +21,14 @@ namespace Chess
                 get { return chessSprites[ ( int ) type ]; }
                 set { chessSprites[ ( int ) type ] = value; }
             }
-            public Image Texture
+            public void SetTexture( Image img )
             {
-                set
-                {
-                    foreach ( Sprite sprite in chessSprites )
-                        sprite.Image = value;
-                }
+                foreach ( Sprite sprite in chessSprites )
+                    sprite.Image = img;
             }
         }
         private ChessSpriteKit black = new ChessSpriteKit();
         private ChessSpriteKit white = new ChessSpriteKit();
-
         public Sprite this[ GameColor color, ChessType type ]
         {
             get
@@ -55,14 +52,12 @@ namespace Chess
             set
             {
                 texture = value;
-                black.Texture = texture;
-                white.Texture = texture;
+                black.SetTexture( texture );
+                white.SetTexture( texture );
             }
         }
 
         #region XmlLoader
-
-        #region Checkers
 
         public class RestoreSkinXmlException : Exception
         {
@@ -100,8 +95,6 @@ namespace Chess
                 throw new RestoreSkinXmlException();
         }
 
-        #endregion
-
         static private class Constains
         {
             public const string TagRoot      = "skin";
@@ -133,37 +126,6 @@ namespace Chess
             };
         }
 
-        private void LoadChess( XmlNode typeNode, GameColor color )
-        {
-            CheckChilds( typeNode, Constains.ChessTags );
-            CheckAttributes( typeNode, Constains.Empty );
-            
-            foreach ( XmlNode chessNode in typeNode.ChildNodes )
-            {
-                CheckChilds( chessNode, Constains.Empty );
-                CheckAttributes( chessNode, Constains.AttributesChess );
-
-                ChessType type = ( ChessType ) Enum.Parse(
-                        typeof( ChessType )
-                    ,   char.ToUpper( chessNode.Name[ 0 ] ) + chessNode.Name.Remove( 0 )
-                );
-                
-                Rectangle rect = new Rectangle();
-                foreach ( XmlAttribute attr in chessNode.Attributes )
-                {
-                    if ( attr.Name == Constains.AttrChessX )
-                        rect.X = int.Parse( attr.Value );
-                    else if ( attr.Name == Constains.AttrChessY )
-                        rect.Y = int.Parse( attr.Value );
-                    else if ( attr.Name == Constains.AttrChessWidth )
-                        rect.Width = int.Parse( attr.Value );
-                    else if ( attr.Name == Constains.AttrChessHeight )
-                        rect.Height = int.Parse( attr.Value );
-                }
-                this[ color, type ].Rectangle = rect;
-            }
-        }
-
         public void Load( string xmlFilePath )
         {
             XmlDocument document = new XmlDocument();
@@ -177,10 +139,10 @@ namespace Chess
             if ( root.Name != Constains.TagRoot )
                 throw new RestoreSkinXmlException();
 
+            texture = Image.FromFile( root.Attributes[ Constains.AttrSkinImage ].Value );
+
             CheckChilds( root, Constains.ChildTagsSkin );
             CheckAttributes( root, Constains.AttributesSkin );
-            
-            Texture = Image.FromFile( root.Attributes[ Constains.AttrSkinImage ].Value );
 
             foreach ( XmlNode colorTag in root.ChildNodes )
             {
@@ -196,8 +158,32 @@ namespace Chess
                 }
 
                 foreach ( XmlNode chessTag in colorTag.ChildNodes )
-                    LoadChess( chessTag, colorChess );
+                {
+                    CheckChilds( chessTag, Constains.ChessTags );
+                    CheckAttributes( chessTag, Constains.AttributesChess );
+
+                    ChessType type = ( ChessType ) Enum.Parse(
+                            typeof( ChessType )
+                        , char.ToUpper( chessTag.Name[ 0 ] ) + chessTag.Name.Remove( 0, 1 )
+                    );
+
+                    Rectangle rect = new Rectangle();
+                    foreach ( XmlAttribute attr in chessTag.Attributes )
+                    {
+                        if ( attr.Name == Constains.AttrChessX )
+                            rect.X = int.Parse( attr.Value );
+                        else if ( attr.Name == Constains.AttrChessY )
+                            rect.Y = int.Parse( attr.Value );
+                        else if ( attr.Name == Constains.AttrChessWidth )
+                            rect.Width = int.Parse( attr.Value );
+                        else if ( attr.Name == Constains.AttrChessHeight )
+                            rect.Height = int.Parse( attr.Value );
+                    }
+                    this[ colorChess, type ] = new Sprite( texture, rect );
+
+                }
             }
+
         }
         #endregion
 
