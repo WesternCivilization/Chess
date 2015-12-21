@@ -8,14 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Chess
+namespace ChessClient
 {
     public partial class ChessClientForm : Form
     {
         public ChessClientForm()
         {
             InitializeComponent();
-            
         }
     }
 }
