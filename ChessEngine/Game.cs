@@ -9,24 +9,54 @@ namespace Chess
 {
     public class Game
     {
-        Player Player1 { get; set; }
-        Player Player2 { get; set; }
+        public Player Player1 { get; private set; }
+        public Player Player2 { get; private set; }
 
         public Desk Desk { get; private set; }
         public ChessFactory Factory { get; private set; }
 
-        public Game( Player player1, Player player2, ChessFactory factory )
+        public Game( Skin skin )
         {
             Desk = new Desk();
-            Factory = factory;
+            Factory = new ChessFactory( skin );
+        }
 
+        public void Start( Player player1, Player player2 )
+        {
             Player1 = player1;
             Player2 = player2;
+            PlayersSetup();
 
-            Player1.ChessColor = GameColor.White;
-            Player2.ChessColor = GameColor.Black;
-
+            Factory.Reset();
             BuildStandartArrangement();
+        }
+
+        private static Random random = new Random();
+        private void PlayersSetup()
+        {
+            bool randomColor = random.Next( 0, 2 ) == 0;
+            if ( randomColor )
+            {
+                Player1.Color = GameColor.White;
+                Player2.Color = GameColor.Black;
+            }
+            else
+            {
+                Player1.Color = GameColor.Black;
+                Player2.Color = GameColor.White;
+            }
+
+            bool randomDirection = random.Next( 0, 2 ) == 0;
+            if ( randomDirection )
+            {
+                Player1.Direction = ChessDirection.Up;
+                Player2.Direction = ChessDirection.Down;
+            }
+            else
+            {
+                Player1.Direction = ChessDirection.Down;
+                Player2.Direction = ChessDirection.Up;
+            }
         }
 
         public void Move( Chess chess, Point index )
@@ -44,31 +74,43 @@ namespace Chess
         {
             Desk.Clean();
 
-            AddChess( ChessType.Rook, GameColor.Black, 0, 0 );
-            AddChess( ChessType.Rook, GameColor.Black, 7, 0 );
-            AddChess( ChessType.Rook, GameColor.White, 0, 7 );
-            AddChess( ChessType.Rook, GameColor.White, 7, 7 );
+            GameColor up, down;
+            if ( Player1.Color == GameColor.White )
+            {
+                down = Player1.Color;
+                up = Player2.Color;
+            }
+            else
+            {
+                down = Player2.Color;
+                up = Player1.Color;
+            }
 
-            AddChess( ChessType.Knight, GameColor.Black, 1, 0 );
-            AddChess( ChessType.Knight, GameColor.Black, 6, 0 );
-            AddChess( ChessType.Knight, GameColor.White, 1, 7 );
-            AddChess( ChessType.Knight, GameColor.White, 6, 7 );
+            AddChess( ChessType.Rook, up, 0, 0 );
+            AddChess( ChessType.Rook, up, 7, 0 );
+            AddChess( ChessType.Rook, down, 0, 7 );
+            AddChess( ChessType.Rook, down, 7, 7 );
 
-            AddChess( ChessType.Bishop, GameColor.Black, 2, 0 );
-            AddChess( ChessType.Bishop, GameColor.Black, 5, 0 );
-            AddChess( ChessType.Bishop, GameColor.White, 2, 7 );
-            AddChess( ChessType.Bishop, GameColor.White, 5, 7 );
+            AddChess( ChessType.Knight, up, 1, 0 );
+            AddChess( ChessType.Knight, up, 6, 0 );
+            AddChess( ChessType.Knight, down, 1, 7 );
+            AddChess( ChessType.Knight, down, 6, 7 );
 
-            AddChess( ChessType.King, GameColor.Black, 3, 0 );
-            AddChess( ChessType.King, GameColor.White, 3, 7 );
+            AddChess( ChessType.Bishop, up, 2, 0 );
+            AddChess( ChessType.Bishop, up, 5, 0 );
+            AddChess( ChessType.Bishop, down, 2, 7 );
+            AddChess( ChessType.Bishop, down, 5, 7 );
 
-            AddChess( ChessType.Queen, GameColor.Black, 4, 0 );
-            AddChess( ChessType.Queen, GameColor.White, 4, 7 );
+            AddChess( ChessType.King, up, 3, 0 );
+            AddChess( ChessType.King, down, 3, 7 );
+
+            AddChess( ChessType.Queen, up, 4, 0 );
+            AddChess( ChessType.Queen, down, 4, 7 );
 
             for ( int i = 0; i < 8; ++i )
             {
-                AddChess( ChessType.Pawn, GameColor.Black, i, 1 );
-                AddChess( ChessType.Pawn, GameColor.White, i, 6 );
+                AddChess( ChessType.Pawn, up, i, 1 );
+                AddChess( ChessType.Pawn, down, i, 6 );
             }
         }
     }

@@ -40,7 +40,6 @@
             this.MaximizeBox = false;
             this.Name = "ChessClientForm";
             this.Text = "ChessClient";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.ChessClientForm_Paint);
             this.ResumeLayout(false);
 
         }

@@ -8,10 +8,10 @@ namespace Chess
         public ChessCollection AllChess = new ChessCollection();
         public ChessCollection KilledChess = new ChessCollection();
 
-        public ChessFactory( Skin skin, ChessDirection whiteChessDirection )
+        public ChessFactory( Skin skin )
         {
             Skin = skin;
-            this.whiteChessDirection = whiteChessDirection;
+            WhiteChessDirection = ChessDirection.Up;
         }
 
         private SizeF chessSize;
@@ -36,15 +36,15 @@ namespace Chess
             }
         }
 
-        private ChessDirection whiteChessDirection;
+        public ChessDirection WhiteChessDirection { get; set; }
         public ChessDirection GetDirection( Chess chess )
         {
             if ( chess.Color == GameColor.White )
-                return whiteChessDirection;
+                return WhiteChessDirection;
             else
             {
-                return whiteChessDirection == ChessDirection.Up
-                    ?   ChessDirection.Bottom
+                return WhiteChessDirection == ChessDirection.Up
+                    ?   ChessDirection.Down
                     :   ChessDirection.Up;
             }
         }
@@ -78,6 +78,11 @@ namespace Chess
         {
             KilledChess.Remove( chess );
             AllChess.Remove( chess );
+        }
+        public void Reset()
+        {
+            KilledChess.Clear();
+            AllChess.Clear();
         }
     }
 }

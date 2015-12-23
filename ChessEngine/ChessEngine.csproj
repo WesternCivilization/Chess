@@ -66,8 +66,9 @@
     <Compile Include="Graphics\Primitives\Shapes\RectangleShape.cs" />
     <Compile Include="Graphics\Primitives\Shapes\Shape.cs" />
     <Compile Include="Graphics\Primitives\Sprite.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Player\Player.cs" />
     <Compile Include="Skin.cs" />
+    <Compile Include="Player\NetworkPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tools\Tools.csproj">
