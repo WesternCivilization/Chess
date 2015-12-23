@@ -45,8 +45,8 @@
     <Compile Include="Chess\ChessDirection.cs" />
     <Compile Include="GameColor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ChessDesk\ChessDesk.cs" />
-    <Compile Include="ChessDesk\ChessDeskCell.cs" />
+    <Compile Include="ChessDesk\Desk.cs" />
+    <Compile Include="ChessDesk\DeskCell.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GuiElements\ChessSelect.cs" />
     <Compile Include="Chess\Chess.cs" />

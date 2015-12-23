@@ -32,12 +32,16 @@
             // 
             // ChessClientForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size( 384, 361 );
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(384, 361);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ChessClientForm";
             this.Text = "ChessClient";
-            this.ResumeLayout( false );
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.ChessClientForm_Paint);
+            this.ResumeLayout(false);
 
         }
 

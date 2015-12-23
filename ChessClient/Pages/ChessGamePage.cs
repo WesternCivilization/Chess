@@ -5,7 +5,7 @@ using Tools;
 
 namespace Chess
 {
-    public class ChessGamePage : Panel
+    public class ChessGamePage : UserControl
     {
         public Game Game { get; set; }
 
@@ -36,9 +36,8 @@ namespace Chess
         public void OnPaint( object sender, PaintEventArgs e )
         {
             e.Graphics.Draw( Game.Desk );
-            select.DrawHover( e.Graphics );
             e.Graphics.Draw( Game.Factory.AllChess );
-            select.DrawSelect( e.Graphics );
+            e.Graphics.Draw( select );
             if ( holdChess != null )
                 e.Graphics.Draw( holdChess );
         }
@@ -58,7 +57,7 @@ namespace Chess
         {
             if ( e.Button != MouseButtons.Left )
                 return;
-            ChessDeskCell cell = Game.Desk.GetCellByMouse( e.Location );
+            DeskCell cell = Game.Desk.GetCellByMouse( e.Location );
             if ( cell != null )
             {
                 Chess chess = cell.Chess;
@@ -73,7 +72,7 @@ namespace Chess
 
         private void OnMouseMove( object sender, MouseEventArgs e )
         {
-            ChessDeskCell cell = Game.Desk.GetCellByMouse( e.Location );
+            DeskCell cell = Game.Desk.GetCellByMouse( e.Location );
             if ( cell != null )
             {
                 select.HoveredCell = cell;
@@ -89,7 +88,7 @@ namespace Chess
         {
             if ( holdChess != null )
             {
-                ChessDeskCell cell = Game.Desk.GetCellByMouse( e.Location );
+                DeskCell cell = Game.Desk.GetCellByMouse( e.Location );
                 if ( cell != null )
                 {
                     Game.Move( holdChess, cell.Index );

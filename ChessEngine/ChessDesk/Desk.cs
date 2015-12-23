@@ -2,7 +2,7 @@
 
 namespace Chess
 {
-    public class ChessDesk : IDrawable
+    public class Desk : IDrawable
     {
         public static bool CheckOutOfRange( int x, int y )
         {
@@ -15,14 +15,14 @@ namespace Chess
 
         public RectangleF Rectangle { get; set; }
 
-        private ChessDeskCell[ , ] cells = new ChessDeskCell[ 8, 8 ];
-        public ChessDeskCell this[ Point p ]
+        private DeskCell[ , ] cells = new DeskCell[ 8, 8 ];
+        public DeskCell this[ Point p ]
         {
             get { return this[ p.X, p.Y ]; }
             set { cells[ p.X, p.Y ] = value; }
         }
 
-        public ChessDeskCell this[ int x, int y ]
+        public DeskCell this[ int x, int y ]
         {
             get
             {
@@ -33,7 +33,7 @@ namespace Chess
             set { cells[ x, y ] = value; }
         }
 
-        public ChessDeskCell GetCellByMouse( Point mouseCoord )
+        public DeskCell GetCellByMouse( Point mouseCoord )
         {
             if ( mouseCoord.X != 0 )
                 mouseCoord.X /= ( int ) CellsSize.Width;
@@ -42,10 +42,9 @@ namespace Chess
             return this[ mouseCoord ];
         }
 
-        public SizeF CellsSize
-        { get { return cells[ 0, 0 ].Size; } }
+        public SizeF CellsSize { get { return cells[ 0, 0 ].Size; } }
 
-        public ChessDesk()
+        public Desk()
         {
             LoadCells();
         }
@@ -62,8 +61,7 @@ namespace Chess
                     }
                 }
         }
-
-
+        
         private void LoadCells()
         {
             GameColor currentType;
@@ -76,7 +74,7 @@ namespace Chess
 
                 for ( int i = 0; i < 8; ++i )
                 {
-                    cells[ i, j ] = new ChessDeskCell( this, currentType, new Point( i, j ) );
+                    cells[ i, j ] = new DeskCell( this, currentType, new Point( i, j ) );
 
                     currentType = ( currentType == GameColor.Black )
                         ?   GameColor.White
@@ -87,7 +85,7 @@ namespace Chess
 
         public void Draw( Graphics g )
         {
-            foreach ( ChessDeskCell cell in cells )
+            foreach ( DeskCell cell in cells )
                 cell.Draw( g );
         }
     }

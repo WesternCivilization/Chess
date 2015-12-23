@@ -3,10 +3,10 @@ using System.Drawing;
 
 namespace Chess
 {
-    public class ChessDeskCell : IDrawable
+    public class DeskCell : IDrawable
     {
         public GameColor Color { get; private set; }
-        public ChessDesk Desk { get; private set; }
+        public Desk Desk { get; private set; }
 
         private Chess chess;
         public Chess Chess
@@ -20,7 +20,7 @@ namespace Chess
             }
         }
 
-        public ChessDeskCell( ChessDesk desk, GameColor type, Point index )
+        public DeskCell( Desk desk, GameColor type, Point index )
         {
             Desk = desk;
             Color = type;
@@ -33,7 +33,7 @@ namespace Chess
             get { return index; }
             set
             {
-                if ( ChessDesk.CheckOutOfRange( value.X, value.Y ) )
+                if ( Desk.CheckOutOfRange( value.X, value.Y ) )
                     throw new ArgumentOutOfRangeException();
                 index = value;
             }
@@ -55,7 +55,7 @@ namespace Chess
             {
                 return new PointF(
                         Desk.Rectangle.X + ( Size.Width * Index.X )
-                    , Desk.Rectangle.Y + ( Size.Height * Index.Y )
+                    ,   Desk.Rectangle.Y + ( Size.Height * Index.Y )
                 );
             }
         }

@@ -4,7 +4,7 @@ namespace Chess
 {
     public abstract class Chess : IDrawable
     {
-        public ChessDeskCell Cell { get; set; }
+        public DeskCell Cell { get; set; }
         public Sprite Sprite { get; set; }
         public GameColor Color { get; private set; }
         public ChessType Type { get; private set; }
@@ -46,7 +46,7 @@ namespace Chess
         {
             if ( Cell == null                           /* Killed chess can't move */
               || index == Cell.Index                    /* Same position */
-              || ChessDesk.CheckOutOfRange( index ) )   /* In range desk */
+              || Desk.CheckOutOfRange( index ) )   /* In range desk */
                 return false;
 
             if ( UsingFreeMove )

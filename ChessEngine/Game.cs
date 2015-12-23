@@ -12,12 +12,12 @@ namespace Chess
         Player Player1 { get; set; }
         Player Player2 { get; set; }
 
-        public ChessDesk Desk { get; private set; }
+        public Desk Desk { get; private set; }
         public ChessFactory Factory { get; private set; }
 
         public Game( Player player1, Player player2, ChessFactory factory )
         {
-            Desk = new ChessDesk();
+            Desk = new Desk();
             Factory = factory;
 
             Player1 = player1;
