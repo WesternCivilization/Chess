@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{910A47FC-93BC-46F6-B115-6FCBCA62DA66}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chess</RootNamespace>
     <AssemblyName>ChessClient</AssemblyName>
@@ -61,6 +61,30 @@
     <Compile Include="Pages\ChessGameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Pages\ConnectPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\ConnectPage.Designer.cs">
+      <DependentUpon>ConnectPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RegistrationPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\RegistrationPage.Designer.cs">
+      <DependentUpon>RegistrationPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SelectСontenderPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\SelectСontenderPage.Designer.cs">
+      <DependentUpon>SelectСontenderPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SignInPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\SignInPage.Designer.cs">
+      <DependentUpon>SignInPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ChessClientForm.resx">
@@ -68,6 +92,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\ChessGamePage.resx">
       <DependentUpon>ChessGamePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\ConnectPage.resx">
+      <DependentUpon>ConnectPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\RegistrationPage.resx">
+      <DependentUpon>RegistrationPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\SelectСontenderPage.resx">
+      <DependentUpon>SelectСontenderPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\SignInPage.resx">
+      <DependentUpon>SignInPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

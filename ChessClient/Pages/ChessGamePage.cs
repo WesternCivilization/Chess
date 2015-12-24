@@ -56,7 +56,8 @@ namespace Chess
 
         private void OnPaint( object sender, PaintEventArgs e )
         {
-            DrawCoords( e.Graphics, Game.Player1.Direction );
+            if ( gameControl.Game.GameState == Game.State.InTheGame )
+                DrawCoords( e.Graphics, Game.Player1.Direction );
         }
     }
 }

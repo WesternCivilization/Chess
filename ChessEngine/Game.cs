@@ -15,14 +15,19 @@ namespace Chess
         public Desk Desk { get; private set; }
         public ChessFactory Factory { get; private set; }
 
+        public enum State { None, InTheGame, Finish }
+        public State GameState { get; private set; }
+
         public Game( Skin skin )
         {
             Desk = new Desk();
             Factory = new ChessFactory( skin );
+            GameState = State.None;
         }
 
         public void Start( Player player1, Player player2 )
         {
+            GameState = State.InTheGame;
             Player1 = player1;
             Player2 = player2;
             PlayersSetup();

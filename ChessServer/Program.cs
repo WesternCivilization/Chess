@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
-namespace ChessServer
+namespace Chess
 {
     static class Program
     {
@@ -16,7 +17,18 @@ namespace ChessServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ChessServerForm());
+
+            const string FILE_DATABASE = "DATA.BIN";
+
+            Database database;
+            if ( File.Exists( FILE_DATABASE ) )
+                database = Database.FromFile( FILE_DATABASE );
+            else
+                database = new Database();
+
+            Application.Run( new ChessServerForm( database ) );
+
+            database.Save( FILE_DATABASE );
         }
     }
 }

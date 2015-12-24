@@ -34,11 +34,14 @@ namespace Chess
         
         public void OnPaint( object sender, PaintEventArgs e )
         {
-            e.Graphics.Draw( Game.Desk );
-            e.Graphics.Draw( Game.Factory.AllChess );
-            e.Graphics.Draw( select );
-            if ( holdChess != null )
-                e.Graphics.Draw( holdChess );
+            if ( Game.GameState == Game.State.InTheGame )
+            {
+                e.Graphics.Draw( Game.Desk );
+                e.Graphics.Draw( Game.Factory.AllChess );
+                e.Graphics.Draw( select );
+                if ( holdChess != null )
+                    e.Graphics.Draw( holdChess );
+            }
         }
 
         public void OnResize( object sender, EventArgs e )

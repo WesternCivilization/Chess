@@ -7,71 +7,36 @@ namespace Tools
     {
         public static T FromBytes( byte[] buffer )
         {
-            MemoryStream memoryStream = new MemoryStream( buffer );
-            try
+            using ( MemoryStream memoryStream = new MemoryStream( buffer ) )
             {
                 return ( T ) ( new BinaryFormatter() ).Deserialize( memoryStream );
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                memoryStream.Close();
             }
         }
 
         public static byte[] ToBytes( T data )
         {
-            MemoryStream ms = new MemoryStream();
-            try
+            using ( MemoryStream memoryStream = new MemoryStream() )
             {
-                new BinaryFormatter().Serialize( ms, data );
-                byte[] buffer = ms.GetBuffer();
+
+                new BinaryFormatter().Serialize( memoryStream, data );
+                byte[] buffer = memoryStream.GetBuffer();
                 return buffer;
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                ms.Close();
             }
         }
 
         public static T FromFile( string filename )
         {
-            FileStream fileStream = File.Open( filename, FileMode.Open );
-            try
+            using ( FileStream fileStream = File.Open( filename, FileMode.Open ) )
             {
                 return ( T ) ( new BinaryFormatter() ).Deserialize( fileStream );
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                fileStream.Close();
             }
         }
 
         public static void ToFile( T data, string filename )
         {
-            FileStream fileStream = File.Open( filename, FileMode.OpenOrCreate );
-            try
+            using ( FileStream fileStream = File.Open( filename, FileMode.OpenOrCreate ) )
             {
                 new BinaryFormatter().Serialize( fileStream, data );
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                fileStream.Close();
             }
         }
     }

@@ -7,7 +7,7 @@
     <ProjectGuid>{4B5AED15-051B-4573-B6F9-B9119F386BE1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChessServer</RootNamespace>
+    <RootNamespace>Chess</RootNamespace>
     <AssemblyName>ChessServer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -52,8 +52,15 @@
     <Compile Include="ChessServerForm.Designer.cs">
       <DependentUpon>ChessServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewDatabaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewDatabaseForm.Designer.cs">
+      <DependentUpon>ViewDatabaseForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ChessServerForm.resx">
       <DependentUpon>ChessServerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -67,6 +74,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ViewDatabaseForm.resx">
+      <DependentUpon>ViewDatabaseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -79,6 +89,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">
+      <Project>{335a32f4-3708-4bd0-aad9-70289b9b8cf0}</Project>
+      <Name>ChessEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChessNetwork\ChessNetwork.csproj">
+      <Project>{9b2e8a89-7484-42e5-b296-8574982ede4a}</Project>
+      <Name>ChessNetwork</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tools\Tools.csproj">
+      <Project>{bd5d83f6-23d0-4712-8e8e-de4e32c93b62}</Project>
+      <Name>Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

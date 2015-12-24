@@ -43,8 +43,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Packet.cs" />
+    <Compile Include="RegistrationData.cs" />
+    <Compile Include="SingInData.cs" />
+    <Compile Include="StartGameResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">
+      <Project>{335a32f4-3708-4bd0-aad9-70289b9b8cf0}</Project>
+      <Name>ChessEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{bd5d83f6-23d0-4712-8e8e-de4e32c93b62}</Project>
       <Name>Tools</Name>
