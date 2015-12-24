@@ -76,11 +76,6 @@ namespace Chess
         private void ChessClientForm_FormClosed( object sender, FormClosedEventArgs e )
         {
             socket.Close();
-            if ( waitThead != null )
-            {
-                if ( waitThead.IsAlive )
-                    waitThead.Abort();
-            }
         }
 
         private Player SelfPlayer
@@ -173,14 +168,12 @@ namespace Chess
             }
         }
 
-        private bool IsEndGame()
+        private bool IsEndGame
         {
             // TODO
-            return false;
+            get { return false; }
         }
-
-
-        private Thread waitThead;
+        
         public void OnMouseUp( object sender, MouseEventArgs e )
         {
             if ( holdChess != null )
@@ -195,9 +188,8 @@ namespace Chess
                         {
                             gamePage.Game.SwapPlayers();
                             socket.Send( Packet.MoveChessPacket( new ChessMoveData( from, cell.Index, ContenderPlayer.Name ) ) );
-                            waitThead = new Thread( () => WaitResult() );
 
-                            if ( IsEndGame() )
+                            if ( IsEndGame )
                             {
                                 // TODO
                             }
@@ -305,10 +297,9 @@ namespace Chess
         }
 
         #endregion
-
+        
 
         private static ManualResetEvent waitLocker = new ManualResetEvent( false );
-
         private void WaitResult( int timeout = 0 )
         {
             waitLocker.Reset();
@@ -369,7 +360,11 @@ namespace Chess
             );
 
             gamePage.Game.Start( player1, player2 );
-            Task.Factory.StartNew( () => WaitResult() );
+            Task.Factory.StartNew( () =>
+            {
+                while ( !IsEndGame && !IsDisposed && socket.Connected )
+                    WaitResult();
+            } );
         }
 
         private void OnRecieve( object sender, SocketAsyncEventArgs e )
@@ -427,7 +422,7 @@ namespace Chess
                             {
                                 gamePage.Game.SwapPlayers();
                                 gamePage.GameControl.Repaint();
-                                if ( IsEndGame() )
+                                if ( IsEndGame )
                                 {
                                     // TODO
                                 }
