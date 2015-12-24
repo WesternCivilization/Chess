@@ -11,21 +11,21 @@ namespace Chess
         private Size cellSize = new Size( 50, 50 );
         private Font font = new Font( "Segoe UI", 16 );
 
-        private ChessGameControl gameControl;
-        public Game Game { get { return gameControl.Game; } }
+        public ChessGameControl GameControl { get; private set; }
+        public Game Game { get { return GameControl.Game; } }
 
         public ChessGamePage( Skin skin )
         {
             Paint += OnPaint;
 
-            gameControl = new ChessGameControl( skin );
-            gameControl.ClientSize = new Size( cellSize.Width * 8, cellSize.Width * 8 );
+            GameControl = new ChessGameControl( skin );
+            GameControl.ClientSize = new Size( cellSize.Width * 8, cellSize.Width * 8 );
             ClientSize = new Size(
-                    indent + gameControl.ClientSize.Width + indent
-                ,   indent + gameControl.ClientSize.Height + indent
+                    indent + GameControl.ClientSize.Width + indent
+                ,   indent + GameControl.ClientSize.Height + indent
             );
-            gameControl.Location = new Point( indent, indent );
-            Controls.Add( gameControl );
+            GameControl.Location = new Point( indent, indent );
+            Controls.Add( GameControl );
         }
         
         private void DrawCoords( Graphics g, ChessDirection direction )
@@ -56,7 +56,7 @@ namespace Chess
 
         private void OnPaint( object sender, PaintEventArgs e )
         {
-            if ( gameControl.Game.GameState == Game.State.InTheGame )
+            if ( GameControl.Game.GameState == Game.State.InTheGame )
                 DrawCoords( e.Graphics, Game.Player1.Direction );
         }
     }

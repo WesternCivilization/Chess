@@ -109,6 +109,7 @@ namespace Chess
         }
 
         private Dictionary<string, Socket> connections = new Dictionary<string, Socket>();
+
         private static ManualResetEvent connectLocker = new ManualResetEvent( false );
         public void OnConnect( object sender, SocketAsyncEventArgs e )
         {
@@ -154,12 +155,13 @@ namespace Chess
                     {
                         case Packet.Type.SignIn:
                             {
-                                RegistrationData registration = database.Find( packet.SignInData.Login );
-                                if ( registration == null || registration.Password != packet.SignInData.Password )
-                                    e.AcceptSocket.Send( Packet.SignInResultPacket( SignInResult.InvalidPasswordOrLogin ).ToBytes() );
+                                SignInData signInData = ( SignInData ) packet.Data;
+                                RegistrationData registration = database.Find( signInData.Login );
+                                if ( registration == null || registration.Password != signInData.Password )
+                                    e.AcceptSocket.Send( Packet.SignInResultPacket( SignInResult.InvalidPasswordOrLogin ) );
                                 else
                                 {
-                                    e.AcceptSocket.Send( Packet.SignInResultPacket( SignInResult.OK ).ToBytes() );
+                                    e.AcceptSocket.Send( Packet.SignInResultPacket( SignInResult.OK ) );
                                     this.InvokeEx( () => listBoxFreeClients.Items.Add( registration ) );
                                     this.InvokeEx( () => connections.Add( registration.Login, e.AcceptSocket ) );
                                 }
@@ -168,36 +170,40 @@ namespace Chess
 
                         case Packet.Type.Registration:
                             {
-                                if ( database.ContainsLogin( packet.RegistrationData.Login ) )
-                                    e.AcceptSocket.Send( Packet.RegistrationResultPacket( RegistrationResult.LoginAllreadyExist ).ToBytes() );
+                                RegistrationData registrationData = ( RegistrationData ) packet.Data;
+                                if ( database.ContainsLogin( registrationData.Login ) )
+                                    e.AcceptSocket.Send( Packet.RegistrationResultPacket( RegistrationResult.LoginAllreadyExist ) );
                                 else
                                 {
-                                    e.AcceptSocket.Send( Packet.RegistrationResultPacket( RegistrationResult.OK ).ToBytes() );
-                                    database.Registered.Add( packet.RegistrationData );
+                                    e.AcceptSocket.Send( Packet.RegistrationResultPacket( RegistrationResult.OK ) );
+                                    database.Registered.Add( registrationData );
                                 }
                             }
                             break;
                         case Packet.Type.GetConnectedPlayers:
                             {
+                                string login = ( string ) packet.Data;
                                 List<RegistrationData> players = new List<RegistrationData>();
                                 foreach ( RegistrationData reg in listBoxFreeClients.Items )
                                 {
-                                    if ( reg.Login != packet.Login )
+                                    if ( reg.Login != login )
                                         players.Add( reg );
                                 }
-                                e.AcceptSocket.Send( Packet.GiveConnectedPlayersPacket( players ).ToBytes() );
+                                e.AcceptSocket.Send( Packet.GiveConnectedPlayersPacket( players ) );
                             }
                             break;
                         case Packet.Type.StartGame:
                             {
-                                Socket s = connections[ packet.Login ];
-                                s.Send( packet.ToBytes() );
+                                StartGameData startGameData = ( StartGameData ) packet.Data;
+                                Socket query = connections[ startGameData.LoginReply ];
+                                query.Send( packet.ToBytes() );
                             }
                             break;
                         case Packet.Type.StartGameResult:
                             {
-                                Socket s = connections[ packet.Login ];
-                                s.Send( packet.ToBytes() );
+                                StartGameData startGameData = ( StartGameData ) packet.Data;
+                                Socket reply = connections[ startGameData.LoginQuery ];
+                                reply.Send( packet.ToBytes() );
                             }
                             break;
                     }
@@ -205,7 +211,20 @@ namespace Chess
             }
             catch
             {
+                e.AcceptSocket.Close();
+                
+                foreach ( var item in connections )
+                {
+                    if ( item.Value == e.AcceptSocket )
+                    {
+                        RegistrationData registration = database.Find( item.Key );
+                        if ( listBoxFreeClients.Items.Contains( registration ) )
+                            this.InvokeEx( () => listBoxFreeClients.Items.Remove( registration ) );
+                    }
+                }
             }
         }
+
+
     }
 }

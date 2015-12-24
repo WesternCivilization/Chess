@@ -60,7 +60,7 @@
             this.textBoxServerIP.Location = new System.Drawing.Point(89, 13);
             this.textBoxServerIP.Name = "textBoxServerIP";
             this.textBoxServerIP.Size = new System.Drawing.Size(147, 29);
-            this.textBoxServerIP.TabIndex = 5;
+            this.textBoxServerIP.TabIndex = 0;
             // 
             // ConnectPage
             // 

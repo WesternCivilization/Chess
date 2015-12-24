@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameChessMoveData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="RegistrationData.cs" />
     <Compile Include="SingInData.cs" />
-    <Compile Include="StartGameResult.cs" />
+    <Compile Include="StartGameData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">

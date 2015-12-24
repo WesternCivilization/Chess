@@ -30,44 +30,15 @@ namespace Chess
             GameState = State.InTheGame;
             Player1 = player1;
             Player2 = player2;
-            PlayersSetup();
 
             Factory.Reset();
             BuildStandartArrangement();
         }
 
-        private static Random random = new Random();
-        private void PlayersSetup()
-        {
-            bool randomColor = random.Next( 0, 2 ) == 0;
-            if ( randomColor )
-            {
-                Player1.Color = GameColor.White;
-                Player2.Color = GameColor.Black;
-            }
-            else
-            {
-                Player1.Color = GameColor.Black;
-                Player2.Color = GameColor.White;
-            }
-
-            bool randomDirection = random.Next( 0, 2 ) == 0;
-            if ( randomDirection )
-            {
-                Player1.Direction = ChessDirection.Up;
-                Player2.Direction = ChessDirection.Down;
-            }
-            else
-            {
-                Player1.Direction = ChessDirection.Down;
-                Player2.Direction = ChessDirection.Up;
-            }
-        }
-
-        public void Move( Chess chess, Point index )
+        public bool Move( Chess chess, Point index )
         {
             // TODO
-            chess.Move( index );
+            return chess.Move( index );
         }
 
         public void AddChess( ChessType type, GameColor color, int x, int y )

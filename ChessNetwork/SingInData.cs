@@ -22,6 +22,6 @@ namespace Chess
     
     public enum SignInResult
     {
-        OK, InvalidPasswordOrLogin, UnknownError
+        Unknown, OK, InvalidPasswordOrLogin
     }
 }

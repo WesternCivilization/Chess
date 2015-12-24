@@ -70,7 +70,7 @@
             this.textBoxFullName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxFullName.Name = "textBoxFullName";
             this.textBoxFullName.Size = new System.Drawing.Size(155, 29);
-            this.textBoxFullName.TabIndex = 2;
+            this.textBoxFullName.TabIndex = 1;
             // 
             // textBoxLogin
             // 
@@ -79,7 +79,7 @@
             this.textBoxLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(155, 29);
-            this.textBoxLogin.TabIndex = 3;
+            this.textBoxLogin.TabIndex = 2;
             // 
             // buttonBack
             // 
@@ -87,7 +87,7 @@
             this.buttonBack.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(112, 37);
-            this.buttonBack.TabIndex = 4;
+            this.buttonBack.TabIndex = 6;
             this.buttonBack.Text = "Back";
             this.buttonBack.UseVisualStyleBackColor = true;
             // 
@@ -108,7 +108,7 @@
             this.textBoxPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(155, 29);
-            this.textBoxPassword.TabIndex = 7;
+            this.textBoxPassword.TabIndex = 3;
             // 
             // labelPassword
             // 
@@ -127,7 +127,7 @@
             this.numericUpDownAge.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.numericUpDownAge.Name = "numericUpDownAge";
             this.numericUpDownAge.Size = new System.Drawing.Size(155, 29);
-            this.numericUpDownAge.TabIndex = 8;
+            this.numericUpDownAge.TabIndex = 4;
             // 
             // labelAge
             // 

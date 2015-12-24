@@ -236,12 +236,12 @@ namespace Chess
         }
 
         protected bool firstMove;
-        public void Move( Point index )
+        public bool Move( Point index )
         {
             if ( Cell == null || !CanMove( index ) )
             {
                 UpdatePosition();
-                return;
+                return false;
             }
 
             Cell.Chess = null;
@@ -252,6 +252,8 @@ namespace Chess
 
             Sprite.Position = Cell.Position;
             firstMove = true;
+
+            return true;
         }
 
         #endregion

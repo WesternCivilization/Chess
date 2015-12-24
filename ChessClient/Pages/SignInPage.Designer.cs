@@ -43,7 +43,7 @@
             this.buttonRegistration.Location = new System.Drawing.Point(141, 132);
             this.buttonRegistration.Name = "buttonRegistration";
             this.buttonRegistration.Size = new System.Drawing.Size(104, 24);
-            this.buttonRegistration.TabIndex = 0;
+            this.buttonRegistration.TabIndex = 3;
             this.buttonRegistration.Text = "Registration";
             this.buttonRegistration.UseVisualStyleBackColor = true;
             // 
@@ -62,7 +62,7 @@
             this.textBoxLogin.Location = new System.Drawing.Point(96, 14);
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(149, 29);
-            this.textBoxLogin.TabIndex = 2;
+            this.textBoxLogin.TabIndex = 0;
             // 
             // labelLogin
             // 
@@ -92,7 +92,7 @@
             this.buttonSignIn.Margin = new System.Windows.Forms.Padding(5);
             this.buttonSignIn.Name = "buttonSignIn";
             this.buttonSignIn.Size = new System.Drawing.Size(227, 34);
-            this.buttonSignIn.TabIndex = 5;
+            this.buttonSignIn.TabIndex = 2;
             this.buttonSignIn.Text = "Sign In";
             this.buttonSignIn.UseVisualStyleBackColor = true;
             // 

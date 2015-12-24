@@ -26,6 +26,6 @@ namespace Chess
 
     public enum RegistrationResult
     {
-        OK, LoginAllreadyExist, UnknownError
+        Unknown, OK, LoginAllreadyExist
     }
 }

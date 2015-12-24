@@ -17,6 +17,7 @@ namespace Chess
             ,   GiveConnectedPlayers
             ,   StartGame
             ,   StartGameResult
+            ,   GameChessMoveData
         }
 
         public static Packet FromBytes( byte[] bytes )
@@ -29,73 +30,63 @@ namespace Chess
             return BinSerializer<Packet>.ToBytes( this );
         }
 
+        public static implicit operator byte[] ( Packet packet )
+        {
+            return packet.ToBytes();
+        }
+
         public Type PacketType { get; set; }
-        private Packet( Type packet )
+        public object Data { get; set; }
+
+        private Packet( Type packet, object data = null )
         {
             PacketType = packet;
+            Data = data;
         }
-        
-        public SignInData SignInData { get; set; }
+
         public static Packet SingInPacket( SignInData singIn )
         {
-            Packet packet = new Packet( Type.SignIn );
-            packet.SignInData = singIn;
-            return packet;
+            return new Packet( Type.SignIn, singIn );
         }
 
-        public SignInResult SignInResult { get; set; }
         public static Packet SignInResultPacket( SignInResult result )
         {
-            Packet packet = new Packet( Type.SignInResult );
-            packet.SignInResult = result;
-            return packet;
+            return new Packet( Type.SignInResult, result );
         }
 
-        public RegistrationData RegistrationData { get; set; }
         public static Packet RegistrationPacket( RegistrationData registrationData )
         {
-            Packet packet = new Packet( Type.Registration );
-            packet.RegistrationData = registrationData;
-            return packet;
+            return new Packet( Type.Registration, registrationData );
         }
 
-        public RegistrationResult RegistrationResult { get; set; }
         public static Packet RegistrationResultPacket( RegistrationResult result )
         {
-            Packet packet = new Packet( Type.RegistrationResult );
-            packet.RegistrationResult = result;
-            return packet;
+            return new Packet( Type.RegistrationResult, result );
         }
-        
-        public string Login { get; set; }
+
         public static Packet GetConnectedPlayersPacket( string login )
         {
-            Packet packet = new Packet( Type.GetConnectedPlayers );
-            packet.Login = login;
-            return packet;
+            return new Packet( Type.GetConnectedPlayers, login );
         }
 
-        public List<RegistrationData> ConnectedPlayers { get; set; }
         public static Packet GiveConnectedPlayersPacket( List<RegistrationData> players )
         {
-            Packet packet = new Packet( Type.GiveConnectedPlayers );
-            packet.ConnectedPlayers = players;
-            return packet;
+            return new Packet( Type.GiveConnectedPlayers, players );
         }
 
-        public static Packet StartGamePacket( string login )
+        public static Packet StartGamePacket( StartGameData data )
         {
-            Packet packet = new Packet( Type.StartGame );
-            packet.Login = login;
-            return packet;
+            return new Packet( Type.StartGame, data );
         }
 
-        public StartGameResult StartGameResult { get; set; }
-        public static Packet StartGameResultPacket( StartGameResult result )
+        public static Packet StartGameReplyPacket( StartGameData replyData )
         {
-            Packet packet = new Packet( Type.StartGameResult );
-            packet.StartGameResult = result;
-            return packet;
+            return new Packet( Type.StartGameResult, replyData );
+        }
+
+        public static Packet MoveChessPacket( GameChessMoveData chessMoveData )
+        {
+            return new Packet( Type.GameChessMoveData, chessMoveData );
         }
     }
 }
