@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
@@ -37,13 +38,12 @@ namespace Chess
             Controls.Add( selectContenderPage );
 
             gamePage = new ChessGamePage( new Skin( "resources/skin/skin.xml" ) );
+            gamePage.GameControl.Paint += OnPaint;
             gamePage.GameControl.MouseDown += OnMouseDown;
             gamePage.GameControl.MouseMove += OnMouseMove;
             gamePage.GameControl.MouseUp += OnMouseUp;
-            gamePage.GameControl.Paint += OnPaint;
-            gamePage.GameControl.Resize += OnResize;
-            LoadSelect();
             Controls.Add( gamePage );
+            LoadSelect();
 
             Page = connectPage;
         }
@@ -76,6 +76,11 @@ namespace Chess
         private void ChessClientForm_FormClosed( object sender, FormClosedEventArgs e )
         {
             socket.Close();
+            if ( waitThead != null )
+            {
+                if ( waitThead.IsAlive )
+                    waitThead.Abort();
+            }
         }
 
         private Player SelfPlayer
@@ -90,6 +95,15 @@ namespace Chess
                 return null;
             }
         }
+        private Player ContenderPlayer
+        {
+            get
+            {
+                return gamePage.Game.Player1 == SelfPlayer
+                    ?   gamePage.Game.Player2
+                    :   gamePage.Game.Player1;
+            }
+        }
 
         #region Game Control
 
@@ -102,7 +116,7 @@ namespace Chess
                 ,   new RectangleShape( Color.FromArgb( 50, Color.Black ) )
             );
         }
-
+        
         private void OnPaint( object sender, PaintEventArgs e )
         {
             if ( gamePage.Game.GameState == Game.State.InTheGame )
@@ -115,31 +129,33 @@ namespace Chess
             }
         }
 
-        private void OnResize( object sender, EventArgs e )
-        {
-            gamePage.Game.Desk.Rectangle = ClientRectangle;
-            gamePage.Game.Factory.ChessSize = gamePage.Game.Desk.CellsSize;
-            gamePage.Game.Factory.AllChess.UpdatePositions();
-            this.Repaint();
-        }
-
         private Chess holdChess;
         private PointF holdDiff;
+
+        private bool IsMyChess( Chess chess )
+        {
+            return chess != null && SelfPlayer != null && chess.Color == SelfPlayer.Color;
+        }
+        private bool IsMyMove()
+        {
+            return gamePage.Game.Current == SelfPlayer;
+        }
 
         public void OnMouseDown( object sender, MouseEventArgs e )
         {
             if ( e.Button != MouseButtons.Left )
                 return;
+
             DeskCell cell = gamePage.Game.Desk.GetCellByMouse( e.Location );
             if ( cell != null )
             {
                 Chess chess = cell.Chess;
-                if ( chess != null && chess.Color == SelfPlayer.Color )
+                if ( IsMyChess( chess ) && IsMyMove() )
                 {
                     holdChess = chess;
                     holdDiff = new PointF( e.X - chess.Sprite.Position.X, e.Y - chess.Sprite.Position.Y );
                 }
-                this.Repaint();
+                gamePage.GameControl.Repaint();
             }
         }
 
@@ -153,10 +169,18 @@ namespace Chess
 
                 if ( holdChess != null )
                     holdChess.Sprite.Position = new PointF( e.X - holdDiff.X, e.Y - holdDiff.Y );
-                this.Repaint();
+                gamePage.GameControl.Repaint();
             }
         }
 
+        private bool IsEndGame()
+        {
+            // TODO
+            return false;
+        }
+
+
+        private Thread waitThead;
         public void OnMouseUp( object sender, MouseEventArgs e )
         {
             if ( holdChess != null )
@@ -164,9 +188,24 @@ namespace Chess
                 DeskCell cell = gamePage.Game.Desk.GetCellByMouse( e.Location );
                 if ( cell != null )
                 {
-                    gamePage.Game.Move( holdChess, cell.Index );
-                    holdChess = null;
-                    this.Repaint();
+                    this.InvokeEx( () =>
+                    {
+                        Point from = holdChess.Cell.Index;
+                        if ( gamePage.Game.Move( holdChess, cell.Index ) )
+                        {
+                            gamePage.Game.SwapPlayers();
+                            socket.Send( Packet.MoveChessPacket( new ChessMoveData( from, cell.Index, ContenderPlayer.Name ) ) );
+                            waitThead = new Thread( () => WaitResult() );
+
+                            if ( IsEndGame() )
+                            {
+                                // TODO
+                            }
+                        }
+                        gamePage.GameControl.Repaint();
+                        holdChess = null;
+
+                    } );
                 }
             }
         }
@@ -269,9 +308,8 @@ namespace Chess
 
 
         private static ManualResetEvent waitLocker = new ManualResetEvent( false );
-        const int TIMEOUT_WAIT = 10 * 1000; // 10 sec
 
-        private void WaitResult()
+        private void WaitResult( int timeout = 0 )
         {
             waitLocker.Reset();
 
@@ -283,7 +321,10 @@ namespace Chess
                 socket.ReceiveAsync( socketAsyncEventArgs );
             }
 
-            waitLocker.WaitOne( TIMEOUT_WAIT );
+            if ( timeout == 0 )
+                waitLocker.WaitOne();
+            else
+                waitLocker.WaitOne( timeout );
         }
 
         private Random random = new Random();
@@ -292,9 +333,9 @@ namespace Chess
             string selectedPlayer = ( selectContenderPage.listBoxContenders.SelectedItem as RegistrationData ).Login;
             StartGameData startGameData = new StartGameData(
                     signInPage.textBoxLogin.Text
-                , selectedPlayer
-                , ( GameColor ) random.Next( 1 )
-                , ( ChessDirection ) random.Next( 1 )
+                ,   selectedPlayer
+                ,   ( GameColor ) random.Next( 1 )
+                ,   ( ChessDirection ) random.Next( 1 )
             );
             socket.Send( Packet.StartGamePacket( startGameData ) );
 
@@ -303,13 +344,17 @@ namespace Chess
         
         private void OnWaitButtonClick( object sender, EventArgs e )
         {
-            WaitResult();
+            this.InvokeEx( () => selectContenderPage.Enabled = false );
+            WaitResult( 10 * 1000 );
+            this.InvokeEx( () => selectContenderPage.Enabled = true );
         }
 
         private void UpdateContendersList()
         {
+            this.InvokeEx( () => selectContenderPage.Enabled = false );
             socket.Send( Packet.GetConnectedPlayersPacket( signInPage.textBoxLogin.Text ) );
-            WaitResult();
+            WaitResult( 1000 );
+            this.InvokeEx( () => selectContenderPage.Enabled = true );
         }
 
         private void StartGame( StartGameData startGameData )
@@ -319,11 +364,12 @@ namespace Chess
             Player player1 = new Player( startGameData.LoginQuery, startGameData.ColorQuery, startGameData.DirectionQuery );
             Player player2 = new Player(
                     startGameData.LoginReply
-                , startGameData.ColorQuery == GameColor.White ? GameColor.Black : GameColor.White
-                , startGameData.DirectionQuery == ChessDirection.Up ? ChessDirection.Down : ChessDirection.Up
+                ,   startGameData.ColorQuery == GameColor.White ? GameColor.Black : GameColor.White
+                ,   startGameData.DirectionQuery == ChessDirection.Up ? ChessDirection.Down : ChessDirection.Up
             );
 
             gamePage.Game.Start( player1, player2 );
+            Task.Factory.StartNew( () => WaitResult() );
         }
 
         private void OnRecieve( object sender, SocketAsyncEventArgs e )
@@ -369,6 +415,25 @@ namespace Chess
                         {
                             this.InvokeEx( () => StartGame( startGameData ) );
                         }
+                    }
+                    break;
+                case Packet.Type.MoveChess:
+                    {
+                        ChessMoveData chessMoveData = ( ChessMoveData ) packet.Data;
+                        this.InvokeEx( () =>
+                        {
+                            Chess chess = gamePage.Game.Desk[ chessMoveData.From ].Chess;
+                            if ( gamePage.Game.Move( chess, chessMoveData.To ) )
+                            {
+                                gamePage.Game.SwapPlayers();
+                                gamePage.GameControl.Repaint();
+                                if ( IsEndGame() )
+                                {
+                                    // TODO
+                                }
+                            }
+                        } );
+
                     }
                     break;
             }

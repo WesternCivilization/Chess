@@ -4,15 +4,17 @@ using System.Drawing;
 namespace Chess
 {
     [Serializable]
-    public class GameChessMoveData
+    public class ChessMoveData
     {
         public Point From { get; set; }
         public Point To { get; set; }
+        public string LoginСontender { get; set; }
 
-        public GameChessMoveData( Point from, Point to )
+        public ChessMoveData( Point from, Point to, string loginContender )
         {
             From = from;
             To = to;
+            LoginСontender = loginContender;
         }
     }
 }

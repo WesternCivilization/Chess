@@ -55,10 +55,13 @@
     <Compile Include="ChessClientForm.Designer.cs">
       <DependentUpon>ChessClientForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ChessGamePage.cs">
+    <Compile Include="Pages\ChessGameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Pages\ChessGameControl.cs">
+    <Compile Include="Pages\ChessGameControl.Designer.cs">
+      <DependentUpon>ChessGameControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ChessGamePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Pages\ConnectPage.cs">
@@ -89,9 +92,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ChessClientForm.resx">
       <DependentUpon>ChessClientForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ChessGamePage.resx">
-      <DependentUpon>ChessGamePage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\ConnectPage.resx">
       <DependentUpon>ConnectPage.cs</DependentUpon>

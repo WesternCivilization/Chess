@@ -17,7 +17,7 @@ namespace Chess
             ,   GiveConnectedPlayers
             ,   StartGame
             ,   StartGameResult
-            ,   GameChessMoveData
+            ,   MoveChess
         }
 
         public static Packet FromBytes( byte[] bytes )
@@ -84,9 +84,9 @@ namespace Chess
             return new Packet( Type.StartGameResult, replyData );
         }
 
-        public static Packet MoveChessPacket( GameChessMoveData chessMoveData )
+        public static Packet MoveChessPacket( ChessMoveData chessMoveData )
         {
-            return new Packet( Type.GameChessMoveData, chessMoveData );
+            return new Packet( Type.MoveChess, chessMoveData );
         }
     }
 }

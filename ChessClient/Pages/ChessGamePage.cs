@@ -11,23 +11,26 @@ namespace Chess
         private Size cellSize = new Size( 50, 50 );
         private Font font = new Font( "Segoe UI", 16 );
 
-        public ChessGameControl GameControl { get; private set; }
-        public Game Game { get { return GameControl.Game; } }
+        public ChessGameControl GameControl;
+        public Game Game { get; private set; }
 
         public ChessGamePage( Skin skin )
         {
-            Paint += OnPaint;
+            Game = new Game( skin );
 
-            GameControl = new ChessGameControl( skin );
+            GameControl = new ChessGameControl();
             GameControl.ClientSize = new Size( cellSize.Width * 8, cellSize.Width * 8 );
+            OnResize();
             ClientSize = new Size(
                     indent + GameControl.ClientSize.Width + indent
                 ,   indent + GameControl.ClientSize.Height + indent
             );
             GameControl.Location = new Point( indent, indent );
             Controls.Add( GameControl );
+
+            Paint += OnPaint;
         }
-        
+
         private void DrawCoords( Graphics g, ChessDirection direction )
         {
             for ( int i = 0; i < 8; ++i )
@@ -38,26 +41,34 @@ namespace Chess
 
                 g.DrawString(
                         textNumer.ToString()
-                    ,   font
-                    ,   Brushes.Black
-                    ,   ( indent * 0.2F )
-                    ,   indent + ( cellSize.Height * i ) + ( cellSize.Height / 2 ) - ( font.Height / 2 )
+                    , font
+                    , Brushes.Black
+                    , ( indent * 0.2F )
+                    , indent + ( cellSize.Height * i ) + ( cellSize.Height / 2 ) - ( font.Height / 2 )
                 );
 
                 g.DrawString(
                         char.ConvertFromUtf32( 'A' + i )
-                    ,   font
-                    ,   Brushes.Black
-                    ,   indent + ( cellSize.Width * i ) + ( cellSize.Width * 0.3F )
-                    ,   ( indent / 2 ) - ( font.Height / 2 )
+                    , font
+                    , Brushes.Black
+                    , indent + ( cellSize.Width * i ) + ( cellSize.Width * 0.3F )
+                    , ( indent / 2 ) - ( font.Height / 2 )
                 );
             }
         }
 
         private void OnPaint( object sender, PaintEventArgs e )
         {
-            if ( GameControl.Game.GameState == Game.State.InTheGame )
+            if ( Game.GameState == Game.State.InTheGame )
                 DrawCoords( e.Graphics, Game.Player1.Direction );
+        }
+
+        private void OnResize( object sender = null, EventArgs e = null )
+        {
+            Game.Desk.Rectangle = GameControl.ClientRectangle;
+            Game.Factory.ChessSize = Game.Desk.CellsSize;
+            Game.Factory.AllChess.UpdatePositions();
+            this.Repaint();
         }
     }
 }

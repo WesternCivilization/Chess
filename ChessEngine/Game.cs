@@ -11,6 +11,12 @@ namespace Chess
     {
         public Player Player1 { get; private set; }
         public Player Player2 { get; private set; }
+        public Player Current { get; private set; }
+
+        public void SwapPlayers()
+        {
+            Current = ( Current == Player1 ) ? Player2 : Player1;
+        }
 
         public Desk Desk { get; private set; }
         public ChessFactory Factory { get; private set; }
@@ -30,6 +36,7 @@ namespace Chess
             GameState = State.InTheGame;
             Player1 = player1;
             Player2 = player2;
+            Current = player1.Color == GameColor.White ? player1 : player2;
 
             Factory.Reset();
             BuildStandartArrangement();

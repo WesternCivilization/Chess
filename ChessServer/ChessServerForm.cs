@@ -206,22 +206,39 @@ namespace Chess
                                 reply.Send( packet.ToBytes() );
                             }
                             break;
+                        case Packet.Type.MoveChess:
+                            {
+                                ChessMoveData chessMoveData = ( ChessMoveData ) packet.Data;
+                                Socket send = connections[ chessMoveData.LoginСontender ];
+                                send.Send( packet.ToBytes() );
+                            }
+                            break;
                     }
                 }
             }
             catch
             {
                 e.AcceptSocket.Close();
-                
-                foreach ( var item in connections )
+                this.InvokeEx( () =>
                 {
-                    if ( item.Value == e.AcceptSocket )
+                    string removeItem = string.Empty;
+                    foreach ( var item in connections )
                     {
-                        RegistrationData registration = database.Find( item.Key );
-                        if ( listBoxFreeClients.Items.Contains( registration ) )
-                            this.InvokeEx( () => listBoxFreeClients.Items.Remove( registration ) );
+                        if ( item.Value == e.AcceptSocket )
+                        {
+                            RegistrationData registration = database.Find( item.Key );
+                            if ( listBoxFreeClients.Items.Contains( registration ) )
+                            {
+                                listBoxFreeClients.Items.Remove( registration );
+                                removeItem = registration.Login;
+                                break;
+                            }
+                        }
                     }
-                }
+
+                    if ( removeItem.Length > 0 )
+                        connections.Remove( removeItem );
+                } );
             }
         }
 
