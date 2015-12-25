@@ -18,6 +18,8 @@ namespace Chess
             ,   StartGame
             ,   StartGameResult
             ,   MoveChess
+            ,   EndGame
+            ,   AbortGame
         }
 
         public static Packet FromBytes( byte[] bytes )
@@ -87,6 +89,16 @@ namespace Chess
         public static Packet MoveChessPacket( ChessMoveData chessMoveData )
         {
             return new Packet( Type.MoveChess, chessMoveData );
+        }
+
+        public static Packet EndGamePacket()
+        {
+            return new Packet( Type.EndGame );
+        }
+
+        public static Packet AbortGamePacket()
+        {
+            return new Packet( Type.AbortGame );
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Chess
 {
     public class ChessFactory
     {
-        public ChessCollection AllChess = new ChessCollection();
+        public ChessCollection ActiveChess = new ChessCollection();
         public ChessCollection KilledChess = new ChessCollection();
 
         public ChessFactory( Skin skin )
@@ -21,7 +21,7 @@ namespace Chess
             set
             {
                 chessSize = value;
-                AllChess.ChessSize = chessSize;
+                ActiveChess.ChessSize = chessSize;
             }
         }
         
@@ -32,7 +32,7 @@ namespace Chess
             set
             {
                 skin = value;
-                AllChess.UpdateSprite();
+                ActiveChess.UpdateSprite();
             }
         }
 
@@ -63,7 +63,7 @@ namespace Chess
                 default:
                     return null;
             }
-            AllChess.Add( chess );
+            ActiveChess.Add( chess );
             chess.Sprite.Size = chessSize;
             chess.Sprite.Position = position;
             return chess;
@@ -72,17 +72,17 @@ namespace Chess
         public void Kill( Chess chess )
         {
             KilledChess.Add( chess );
-            AllChess.Remove( chess );
+            ActiveChess.Remove( chess );
         }
         public void Remove( Chess chess )
         {
             KilledChess.Remove( chess );
-            AllChess.Remove( chess );
+            ActiveChess.Remove( chess );
         }
         public void Reset()
         {
             KilledChess.Clear();
-            AllChess.Clear();
+            ActiveChess.Clear();
         }
     }
 }

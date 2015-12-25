@@ -21,9 +21,7 @@ namespace Chess
 
         public override string ToString()
         {
-            return  "Login query: " + LoginQuery
-                +   "\nLogin reply: " + LoginReply
-                +   "\nReusult: " + Result.ToString();
+            return LoginQuery + " - " + LoginReply;
         }
 
         public StartGameData Reply( StartGameResult result )

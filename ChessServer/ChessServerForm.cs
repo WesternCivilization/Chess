@@ -10,7 +10,6 @@ namespace Chess
 {
     public partial class ChessServerForm : Form
     {
-
         private Database database;
 
         public ChessServerForm( Database database )
@@ -67,8 +66,8 @@ namespace Chess
         }
 
         private Socket socket;
-        public static ManualResetEvent listeningLocker = new ManualResetEvent( false );
-        public void ListeningConnection( object paramIp )
+        private static ManualResetEvent listeningLocker = new ManualResetEvent( false );
+        private void ListeningConnection( object paramIp )
         {
             this.InvokeEx( () => State = ServerState.Binded );
 
@@ -109,9 +108,18 @@ namespace Chess
         }
 
         private Dictionary<string, Socket> connections = new Dictionary<string, Socket>();
+        private string FindLoginBySocket( Socket socket )
+        {
+            foreach ( var item in connections )
+            {
+                if ( item.Value == socket )
+                    return item.Key;
+            }
+            return string.Empty;
+        }
 
         private static ManualResetEvent connectLocker = new ManualResetEvent( false );
-        public void OnConnect( object sender, SocketAsyncEventArgs e )
+        private void OnConnect( object sender, SocketAsyncEventArgs e )
         {
             if ( e.AcceptSocket == null )
                 return;
@@ -140,8 +148,8 @@ namespace Chess
             
             e.AcceptSocket.Close();
         }
-
-        public void OnReceive( object sender, SocketAsyncEventArgs e )
+        
+        private void OnReceive( object sender, SocketAsyncEventArgs e )
         {
             connectLocker.Set();
 
@@ -196,21 +204,61 @@ namespace Chess
                             {
                                 StartGameData startGameData = ( StartGameData ) packet.Data;
                                 Socket query = connections[ startGameData.LoginReply ];
-                                query.Send( packet.ToBytes() );
+                                query.Send( packet );
                             }
                             break;
                         case Packet.Type.StartGameResult:
                             {
                                 StartGameData startGameData = ( StartGameData ) packet.Data;
+
+                                if ( startGameData.Result == StartGameResult.OK )
+                                {
+                                    this.InvokeEx( () =>
+                                    {
+                                        listBoxFreeClients.Items.Remove( database.Find( startGameData.LoginQuery ) );
+                                        listBoxFreeClients.Items.Remove( database.Find( startGameData.LoginReply ) );
+                                        listBoxInTheGame.Items.Add( startGameData );
+                                    } );
+                                }
+
                                 Socket reply = connections[ startGameData.LoginQuery ];
-                                reply.Send( packet.ToBytes() );
+                                reply.Send( packet );
                             }
                             break;
                         case Packet.Type.MoveChess:
                             {
                                 ChessMoveData chessMoveData = ( ChessMoveData ) packet.Data;
                                 Socket send = connections[ chessMoveData.LoginСontender ];
-                                send.Send( packet.ToBytes() );
+                                send.Send( packet );
+                            }
+                            break;
+                        case Packet.Type.AbortGame:
+                        case Packet.Type.EndGame:
+                            {
+                                this.InvokeEx( () =>
+                                {
+                                    StartGameData startGameDataRemove = null;
+
+                                    string login = FindLoginBySocket( e.AcceptSocket );
+                                    foreach ( StartGameData startGameData in listBoxInTheGame.Items )
+                                    {
+                                        if ( startGameData.LoginQuery == login || startGameData.LoginReply == login )
+                                        {
+                                            if ( packet.PacketType == Packet.Type.AbortGame )
+                                            {
+                                                string sendLogin = ( login == startGameData.LoginQuery )
+                                                    ?   startGameData.LoginReply
+                                                    :   startGameData.LoginQuery;
+                                                connections[ sendLogin ].Send( packet );
+                                            }
+                                            startGameDataRemove = startGameData;
+                                            break;
+                                        }
+                                    }
+
+                                    if ( startGameDataRemove != null )
+                                        listBoxInTheGame.Items.Remove( startGameDataRemove );
+                                } );
                             }
                             break;
                     }
@@ -222,18 +270,11 @@ namespace Chess
                 this.InvokeEx( () =>
                 {
                     string removeItem = string.Empty;
-                    foreach ( var item in connections )
+                    RegistrationData registration = database.Find( FindLoginBySocket( e.AcceptSocket ) );
+                    if ( listBoxFreeClients.Items.Contains( registration ) )
                     {
-                        if ( item.Value == e.AcceptSocket )
-                        {
-                            RegistrationData registration = database.Find( item.Key );
-                            if ( listBoxFreeClients.Items.Contains( registration ) )
-                            {
-                                listBoxFreeClients.Items.Remove( registration );
-                                removeItem = registration.Login;
-                                break;
-                            }
-                        }
+                        listBoxFreeClients.Items.Remove( registration );
+                        removeItem = registration.Login;
                     }
 
                     if ( removeItem.Length > 0 )

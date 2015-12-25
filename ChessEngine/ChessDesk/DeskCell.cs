@@ -33,7 +33,7 @@ namespace Chess
             get { return index; }
             set
             {
-                if ( Desk.CheckOutOfRange( value.X, value.Y ) )
+                if ( Desk.IsOutOfRange( value.X, value.Y ) )
                     throw new ArgumentOutOfRangeException();
                 index = value;
             }

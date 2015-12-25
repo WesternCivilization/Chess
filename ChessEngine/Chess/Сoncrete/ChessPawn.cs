@@ -9,11 +9,6 @@ namespace Chess
         {
         }
 
-        public override void Accept( IChessVisitor visitor )
-        {
-            visitor.Visit( this );
-        }
-
         protected override bool CanMoveInternal( Point index )
         {
             bool upDirection = Factory.GetDirection( this ) == ChessDirection.Up;

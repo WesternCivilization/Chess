@@ -52,7 +52,6 @@
     <Compile Include="Chess\Chess.cs" />
     <Compile Include="Chess\ChessType.cs" />
     <Compile Include="Chess\ChessFactory.cs" />
-    <Compile Include="Chess\Visitors\IChessVisitor.cs" />
     <Compile Include="Chess\Сoncrete\ChessBishop.cs" />
     <Compile Include="Chess\Сoncrete\ChessKing.cs" />
     <Compile Include="Chess\Сoncrete\ChessKnight.cs" />
@@ -75,6 +74,7 @@
       <Name>Tools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

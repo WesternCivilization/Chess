@@ -44,13 +44,8 @@ namespace Chess
 
         public bool CanMove( Point index )
         {
-            if ( Cell == null                           /* Killed chess can't move */
-              || index == Cell.Index                    /* Same position */
-              || Desk.CheckOutOfRange( index ) )   /* In range desk */
+            if ( Cell == null || index == Cell.Index || Desk.IsOutOfRange( index ) )
                 return false;
-
-            if ( UsingFreeMove )
-                return true;
 
             return CanMoveInternal( index ); // Our algorithm
         }
@@ -205,24 +200,32 @@ namespace Chess
             }
             return false;
         }
+        
+        public bool CheckMayDie( int x, int y )
+        {
+            return CheckMayDie( new Point( x, y ) );
+        }
 
         public bool CheckMayDie( Point index )
         {
-            // TODO
-            return true;
-        }
-        public bool CheckMayDieThis()
-        {
-            if ( Cell != null )
-                return CheckMayDie( Cell.Index );
+            foreach ( Chess chess in Factory.ActiveChess )
+            {
+                if ( chess != this && chess.Color != Color )
+                {
+                    if ( !Desk.IsOutOfRange( index ) )
+                    {
+                        Chess chessOnCell = Cell.Desk[ index ].Chess;
+                        if ( chess.CanMove( index ) )
+                            return true;
+                    }
+                }
+            }
             return false;
         }
 
         #endregion
 
         #region Actions
-
-        public abstract void Accept( IChessVisitor visitor );
 
         public void UpdatePosition()
         {

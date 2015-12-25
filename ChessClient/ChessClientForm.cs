@@ -75,6 +75,9 @@ namespace Chess
 
         private void ChessClientForm_FormClosed( object sender, FormClosedEventArgs e )
         {
+            if ( gamePage.Game.GameState == Game.State.InTheGame )
+                socket.Send( Packet.AbortGamePacket() );
+
             socket.Close();
         }
 
@@ -117,15 +120,12 @@ namespace Chess
             if ( gamePage.Game.GameState == Game.State.InTheGame )
             {
                 e.Graphics.Draw( gamePage.Game.Desk );
-                e.Graphics.Draw( gamePage.Game.Factory.AllChess );
+                e.Graphics.Draw( gamePage.Game.Factory.ActiveChess );
                 e.Graphics.Draw( select );
                 if ( holdChess != null )
                     e.Graphics.Draw( holdChess );
             }
         }
-
-        private Chess holdChess;
-        private PointF holdDiff;
 
         private bool IsMyChess( Chess chess )
         {
@@ -135,6 +135,17 @@ namespace Chess
         {
             return gamePage.Game.Current == SelfPlayer;
         }
+        private bool IsCheck
+        {
+            get { return gamePage.Game.IsCheck( GameColor.Black ) || gamePage.Game.IsCheck( GameColor.White ); }
+        }
+        private bool IsEndGame
+        {
+            get { return gamePage.Game.IsEndGame( GameColor.Black ) || gamePage.Game.IsEndGame( GameColor.White ); }
+        }
+
+        private Chess holdChess;
+        private PointF holdDiff;
 
         public void OnMouseDown( object sender, MouseEventArgs e )
         {
@@ -168,12 +179,6 @@ namespace Chess
             }
         }
 
-        private bool IsEndGame
-        {
-            // TODO
-            get { return false; }
-        }
-        
         public void OnMouseUp( object sender, MouseEventArgs e )
         {
             if ( holdChess != null )
@@ -191,7 +196,15 @@ namespace Chess
 
                             if ( IsEndGame )
                             {
-                                // TODO
+                                socket.Send( Packet.EndGamePacket() );
+                                gamePage.Game.GameState = Game.State.Finish;
+                                Page = selectContenderPage;
+                                UpdateContendersList();
+                                MessageBox.Show( "Game over" );
+                            }
+                            if ( IsCheck )
+                            {
+                                MessageBox.Show( "Check" );
                             }
                         }
                         gamePage.GameControl.Repaint();
@@ -321,22 +334,25 @@ namespace Chess
         private Random random = new Random();
         public void OnConnectButtonClick( object sender, EventArgs e )
         {
+            this.InvokeEx( () => selectContenderPage.Enabled = false );
+
             string selectedPlayer = ( selectContenderPage.listBoxContenders.SelectedItem as RegistrationData ).Login;
             StartGameData startGameData = new StartGameData(
                     signInPage.textBoxLogin.Text
                 ,   selectedPlayer
-                ,   ( GameColor ) random.Next( 1 )
-                ,   ( ChessDirection ) random.Next( 1 )
+                ,   ( GameColor ) random.Next( 2 )
+                ,   ( ChessDirection ) random.Next( 2 )
             );
             socket.Send( Packet.StartGamePacket( startGameData ) );
 
-            WaitResult();
+            WaitResult( 2000 );
+            this.InvokeEx( () => selectContenderPage.Enabled = true );
         }
         
         private void OnWaitButtonClick( object sender, EventArgs e )
         {
             this.InvokeEx( () => selectContenderPage.Enabled = false );
-            WaitResult( 10 * 1000 );
+            WaitResult( 20 * 1000 );
             this.InvokeEx( () => selectContenderPage.Enabled = true );
         }
 
@@ -344,7 +360,7 @@ namespace Chess
         {
             this.InvokeEx( () => selectContenderPage.Enabled = false );
             socket.Send( Packet.GetConnectedPlayersPacket( signInPage.textBoxLogin.Text ) );
-            WaitResult( 1000 );
+            WaitResult( 2000 );
             this.InvokeEx( () => selectContenderPage.Enabled = true );
         }
 
@@ -374,7 +390,16 @@ namespace Chess
             if ( e.AcceptSocket == null )
                 return;
 
-            Packet packet = Packet.FromBytes( e.Buffer );
+            Packet packet;
+            try
+            {
+                packet = Packet.FromBytes( e.Buffer );
+            }
+            catch
+            {
+                return;
+            }
+             
             switch ( packet.PacketType )
             {
                 case Packet.Type.GiveConnectedPlayers:
@@ -424,12 +449,26 @@ namespace Chess
                                 gamePage.GameControl.Repaint();
                                 if ( IsEndGame )
                                 {
-                                    // TODO
+                                    Page = selectContenderPage;
+                                    UpdateContendersList();
+                                    MessageBox.Show( "Game over" );
+                                }
+                                if ( IsCheck )
+                                {
+                                    MessageBox.Show( "Check" );
                                 }
                             }
                         } );
-
                     }
+                    break;
+                case Packet.Type.AbortGame:
+                    this.InvokeEx( () =>
+                    {
+                        MessageBox.Show( "Abort game" );
+                        gamePage.Game.GameState = Game.State.Finish;
+                        Page = selectContenderPage;
+                        UpdateContendersList();
+                    } );
                     break;
             }
         }

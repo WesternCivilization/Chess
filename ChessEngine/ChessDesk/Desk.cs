@@ -4,13 +4,13 @@ namespace Chess
 {
     public class Desk : IDrawable
     {
-        public static bool CheckOutOfRange( int x, int y )
+        public static bool IsOutOfRange( int x, int y )
         {
             return x < 0 || y < 0 || x >= 8 || y >= 8;
         }
-        public static bool CheckOutOfRange( Point p )
+        public static bool IsOutOfRange( Point p )
         {
-            return CheckOutOfRange( p.X, p.Y );
+            return IsOutOfRange( p.X, p.Y );
         }
 
         public RectangleF Rectangle { get; set; }
@@ -26,7 +26,7 @@ namespace Chess
         {
             get
             {
-                if ( !CheckOutOfRange( x, y ) )
+                if ( !IsOutOfRange( x, y ) )
                     return cells[ x, y ];
                 return null;
             }

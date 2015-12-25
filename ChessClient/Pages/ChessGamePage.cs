@@ -67,7 +67,7 @@ namespace Chess
         {
             Game.Desk.Rectangle = GameControl.ClientRectangle;
             Game.Factory.ChessSize = Game.Desk.CellsSize;
-            Game.Factory.AllChess.UpdatePositions();
+            Game.Factory.ActiveChess.UpdatePositions();
             this.Repaint();
         }
     }

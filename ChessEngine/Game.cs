@@ -22,7 +22,7 @@ namespace Chess
         public ChessFactory Factory { get; private set; }
 
         public enum State { None, InTheGame, Finish }
-        public State GameState { get; private set; }
+        public State GameState { get; set; }
 
         public Game( Skin skin )
         {
@@ -40,6 +40,32 @@ namespace Chess
 
             Factory.Reset();
             BuildStandartArrangement();
+        }
+
+        public bool IsCheck( GameColor color )
+        {
+            Chess king = GetKing( color );
+            return king.CheckMayDie( king.Cell.Index );
+        }
+
+        public bool IsEndGame( GameColor color )
+        {
+            Chess king = GetKing( color );
+            Point p = king.Cell.Index;
+
+            // TODO
+
+            return false;
+        }
+
+        public Chess GetKing( GameColor color )
+        {
+            foreach ( Chess chess in Factory.ActiveChess )
+            {
+                if ( chess is ChessKing && chess.Color == color )
+                    return chess;
+            }
+            return null;
         }
 
         public bool Move( Chess chess, Point index )
