@@ -18,7 +18,6 @@ namespace Chess
         {
             InitializeComponent();
             this.database = database;
-
             listBoxDatabase.Items.AddRange( database.Registered.ToArray() );
         }
 
@@ -27,19 +26,9 @@ namespace Chess
             get { return listBoxDatabase.SelectedItem as SignInData; }
         }
 
-        private void buttonAdd_Click( object sender, EventArgs e )
+        private void buttonClose_Click( object sender, EventArgs e )
         {
-            // TODO
-        }
-
-        private void buttonDelete_Click( object sender, EventArgs e )
-        {
-            // TODO
-        }
-
-        private void buttonChange_Click( object sender, EventArgs e )
-        {
-            // TODO
+            Close();
         }
     }
 }

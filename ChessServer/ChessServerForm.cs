@@ -271,7 +271,7 @@ namespace Chess
                 {
                     string removeItem = string.Empty;
                     RegistrationData registration = database.Find( FindLoginBySocket( e.AcceptSocket ) );
-                    if ( listBoxFreeClients.Items.Contains( registration ) )
+                    if ( registration != null && listBoxFreeClients.Items.Contains( registration ) )
                     {
                         listBoxFreeClients.Items.Remove( registration );
                         removeItem = registration.Login;

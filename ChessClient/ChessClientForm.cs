@@ -28,7 +28,7 @@ namespace Chess
 
             registrationPage = new RegistrationPage();
             registrationPage.buttonRegister.Click += OnClickRegistration;
-            registrationPage.buttonBack.Click += ( object sender, EventArgs e ) => Page = signInPage;
+            registrationPage.buttonBack.Click += OnRegister;
             Controls.Add( registrationPage );
 
             selectContenderPage = new SelectСontenderPage();
@@ -270,6 +270,14 @@ namespace Chess
             }
         }
 
+        private void OnRegister( object sender, EventArgs e )
+        {
+            Page = signInPage;
+            registrationPage.textBoxFullName.Text = string.Empty;
+            registrationPage.textBoxLogin.Text = string.Empty;
+            registrationPage.textBoxPassword.Text = string.Empty;
+        }
+
         private void OnClickRegistration( object sender, EventArgs e )
         {
             try
@@ -278,7 +286,6 @@ namespace Chess
                         registrationPage.textBoxLogin.Text
                     ,   registrationPage.textBoxPassword.Text
                     ,   registrationPage.textBoxFullName.Text
-                    ,   ( int ) registrationPage.numericUpDownAge.Value
                 );
                 socket.Send( Packet.RegistrationPacket( registration ) );
 

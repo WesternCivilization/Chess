@@ -8,19 +8,17 @@ namespace Chess
         public string Login { get; set; }
         public string Password { get; set; }
         public string FullName { get; set; }
-        public int Age { get; set; }
 
-        public RegistrationData( string login, string password, string fullName, int age )
+        public RegistrationData( string login, string password, string fullName )
         {
             Login = login;
             Password = password;
             FullName = fullName;
-            Age = age;
         }
 
         public override string ToString()
         {
-            return FullName + " (" + Login + ")";
+            return Login + " (" + FullName + ")";
         }
     }
 
