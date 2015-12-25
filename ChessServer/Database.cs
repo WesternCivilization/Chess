@@ -6,13 +6,10 @@ using Tools;
 namespace Chess
 {
     [Serializable]
-    public class Database
+    public class Database : List<RegistrationData>
     {
-        public List<RegistrationData> Registered { get; private set; }
-        
         public Database()
         {
-            Registered = new List<RegistrationData>();
         }
 
         public static Database FromFile( string fileName )
@@ -27,7 +24,7 @@ namespace Chess
 
         public RegistrationData Find( string login )
         {
-            foreach ( RegistrationData data in Registered )
+            foreach ( RegistrationData data in this )
             {
                 if ( data.Login == login )
                     return data;
@@ -37,7 +34,7 @@ namespace Chess
 
         public bool ContainsLogin( string login )
         {
-            foreach ( RegistrationData data in Registered )
+            foreach ( RegistrationData data in this )
             {
                 if ( data.Login == login )
                     return true;

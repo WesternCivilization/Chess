@@ -184,7 +184,7 @@ namespace Chess
                                 else
                                 {
                                     e.AcceptSocket.Send( Packet.RegistrationResultPacket( RegistrationResult.OK ) );
-                                    database.Registered.Add( registrationData );
+                                    database.Add( registrationData );
                                 }
                             }
                             break;
