@@ -257,7 +257,11 @@ namespace Chess
                                     }
 
                                     if ( startGameDataRemove != null )
+                                    {
+                                        listBoxFreeClients.Items.Add( database.Find( startGameDataRemove.LoginQuery ) );
+                                        listBoxFreeClients.Items.Add( database.Find( startGameDataRemove.LoginReply ) );
                                         listBoxInTheGame.Items.Remove( startGameDataRemove );
+                                    }
                                 } );
                             }
                             break;

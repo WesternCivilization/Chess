@@ -48,7 +48,7 @@
     <Compile Include="ChessDesk\Desk.cs" />
     <Compile Include="ChessDesk\DeskCell.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GuiElements\ChessSelect.cs" />
+    <Compile Include="ChessSelect.cs" />
     <Compile Include="Chess\Chess.cs" />
     <Compile Include="Chess\ChessType.cs" />
     <Compile Include="Chess\ChessFactory.cs" />
